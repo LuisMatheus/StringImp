@@ -30,7 +30,7 @@ public:
         memcpy(buffer , x , sz);
     }
 
-//B)
+//B) ==========================
     void operator = (const String* s) {
         String* x = new String(s->buffer);
         delete this->buffer;
@@ -45,7 +45,7 @@ public:
         this->sz = x->sz;
     }
 
-//C)
+//C) ===========================
     String operator+(char* c) {
         String* p = new String(c);
         String a = String();
@@ -60,7 +60,7 @@ public:
     }
 
 
-//D)
+//D) ============================
     void operator +=(const String* s) {
         String* a = new String();
 
@@ -76,13 +76,13 @@ public:
 
 //E)
     unsigned int size() {
-        return sz;
+        return this->sz;
     }
     
 //F)
     unsigned int index(char c) {
-        for (unsigned int i = 0; i < sz; i++) {
-            if (*(buffer + i) == c) {
+        for (unsigned int i = 0; i < this->sz; i++) {
+            if (*(this->buffer + i) == c) {
                 return i + 1;
             }
         }
@@ -90,45 +90,51 @@ public:
     }
 
 //G)
-    String toUpCase(unsigned int begin, unsigned int end) {
-        String s = String(this->buffer);
+    String* toUpCase(unsigned int begin, unsigned int end) {
+        String* s = new String(this->buffer);
         begin--;
+        if (end > s->sz)
+            end = s->sz;
         for (int i = begin; i < end ; i++) {
-            if (int(s.buffer[i]) >= 97 && int(s.buffer[i]) <= 122) {
-                s.buffer[i] = char(int(s.buffer[i]) - 32);
+            if (s->buffer[i] >= 97 && s->buffer[i] <= 122) {
+                s->buffer[i] = char(int(s->buffer[i]) - 32);
             }
         }
         return s;
     }
 
 //H)
-    String toLowCase(unsigned int begin, unsigned int end) {
-        String s = String(this->buffer);
+    String* toLowCase(unsigned int begin, unsigned int end) {
+        String* s = new String(this->buffer);
         begin--;
+        if (end > s->sz)
+            end = s->sz;
         for (int i = begin; i < end; i++) {
-            if (int(s.buffer[i]) >= 65 && int(s.buffer[i]) <= 90) {
-                s.buffer[i] = char(int(s.buffer[i]) + 32);
+            if (s->buffer[i] >= 65 && s->buffer[i] <= 90) {
+                s->buffer[i] = char(int(s->buffer[i]) + 32);
             }
         }
         return s;
     }
 
 //I)
-    String toogle(unsigned int begin, unsigned int end) {
-        String s = String(this->buffer);
+    String* toogle(unsigned int begin, unsigned int end) {
+        String* s = new String(this->buffer);
         begin--;
+        if (end > s->sz)
+            end = s->sz;
         for (unsigned int i = begin; i < end; i++) {
-            if (int(s.buffer[i]) >= 97 && int(s.buffer[i]) <= 122) {
-                s.buffer[i] = char(int(s.buffer[i]) - 32);
+            if (s->buffer[i] >= 97 && int(s->buffer[i]) <= 122) {
+                s->buffer[i] = char(int(s->buffer[i]) - 32);
             }
-            else if (int(s.buffer[i]) >= 65 && int(s.buffer[i]) <= 90) {
-                s.buffer[i] = char(int(s.buffer[i]) + 32);
+            else if (int(s->buffer[i]) >= 65 && int(s->buffer[i]) <= 90) {
+                s->buffer[i] = char(int(s->buffer[i]) + 32);
             }
         }
         return s;
     }
 
-//J)
+//J) ==============================
     char operator[] (int i) {
         if (i - 1 > sz) {
             return NULL;
@@ -138,26 +144,27 @@ public:
         }
     }
 
-//K)
-    bool operator == (String s) {
+//K) ==============================
+    bool operator== (String* s) {
 
-        if (this->sz != s.sz)
+        if (this->sz != s->sz)
             return false;
 
-        String x = String(this->buffer);
-        String y = String(s.buffer);
+        String* x = new String(this->buffer);
+        String* y = new String(s->buffer);
 
-        x = x.toLowCase(1, x.sz);
-        y = y.toLowCase(1, y.sz);
+        x = x->toLowCase(1, x->sz);
+        y = y->toLowCase(1, y->sz);
 
-        unsigned int len = x.sz;
+        unsigned int len = x->sz;
 
         for (unsigned int i = 0; i < len; i++){
-            if (x.buffer[i] != y.buffer[i]) {
+            if (x->buffer[i] != y->buffer[i]) {
+                delete x, y;
                 return false;
             }
         }
-
+        delete x, y;
         return true;
     }
 
@@ -335,7 +342,7 @@ int main() {
             cin >> stg2;
 
             break;
-
+            /*
         case 'b':
             cout << "ATRIBUICAO A = B: " << endl;
 
@@ -344,7 +351,7 @@ int main() {
             break;
 
     
-
+            
         case 'c':
             cout << "CONCATENACAO A = B + '' : " << endl;
             cout << "NOVA STRING:";
@@ -353,24 +360,25 @@ int main() {
             stg1 = stg2 + input;
 
             break;
-/*
+            
         case 'd':
             cout << "ATRIBUICAO A += B: " << endl;
 
             stg1 += stg2;
 
             break;
+            */
 
         case 'e':
-            cout << "TAMANHO DA STRING A: " << stg1.size() << endl;
-            cout << "TAMANHA DA STRING B: " << stg2.size() << endl;
+            cout << "TAMANHO DA STRING A: " << stg1->size() << endl;
+            cout << "TAMANHA DA STRING B: " << stg2->size() << endl;
             break;
 
         case 'f':
             cout << "INDEX: ";
             cin >> c;
-            cout << "INDEX NA STRING A: " << stg1.index(c) << endl;
-            cout << "INDEX NA STRING B: " << stg2.index(c) << endl;
+            cout << "INDEX NA STRING A: " << stg1->index(c) << endl;
+            cout << "INDEX NA STRING B: " << stg2->index(c) << endl;
 
             break;
 
@@ -381,8 +389,8 @@ int main() {
             cout << "FIM: ";
             cin >> end;
 
-            stg1 = stg1.toUpCase(begin, end);
-            stg2 = stg2.toUpCase(begin, end);
+            stg1 = stg1->toUpCase(begin, end);
+            stg2 = stg2->toUpCase(begin, end);
 
             break;
 
@@ -393,8 +401,8 @@ int main() {
             cout << "FIM: ";
             cin >> end;
 
-            stg1 = stg1.toLowCase(begin, end);
-            stg2 = stg2.toLowCase(begin, end);
+            stg1 = stg1->toLowCase(begin, end);
+            stg2 = stg2->toLowCase(begin, end);
 
             break;
 
@@ -405,11 +413,11 @@ int main() {
             cout << "FIM: ";
             cin >> end;
 
-            stg1 = stg1.toogle(begin, end);
-            stg2 = stg2.toogle(begin, end);
+            stg1 = stg1->toogle(begin, end);
+            stg2 = stg2->toogle(begin, end);
 
             break;
-
+            /*
         case 'j':
             cout << "RETORNAR char = string[i]: " << endl;
             cout << "POSICAO:";
@@ -422,8 +430,8 @@ int main() {
             cout << "CHAR NA POSICAO " << begin << ": " << c << endl;
 
             break; 
-
             */
+
         case 'k':
             cout << "OPERADORES LOGICOS: " << endl;
 
@@ -467,6 +475,7 @@ int main() {
         }
         cout << endl;
         cout << "---------------------------------------------------------------------";
+        cout << endl;
         cout << endl;
     }
 
